@@ -7,8 +7,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 #[ORM\Entity(repositoryClass: ReportRepository::class)]
+#[Vich\Uploadable]
 class Report
 {
     #[ORM\Id]
@@ -16,20 +20,26 @@ class Report
     #[ORM\Column]
     private ?int $id = null;
 
-    /**
-     * @var Collection<int, User>
-     */
-    #[ORM\OneToMany(targetEntity: User::class, mappedBy: 'report')]
-    private Collection $reporter;
-
     #[ORM\Column(length: 255)]
     private ?string $description = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\File(
+        maxSize: '30M',
+        mimeTypes: ['video/mp4', 'video/avi', 'video/mpeg'],
+        mimeTypesMessage: 'Veuillez télécharger un fichier vidéo valide (mp4, avi, mpeg).'
+    )]
     private ?string $video = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $image = null;
+
+    // NOTE: This is not a mapped field of entity metadata, just a simple property.
+    #[Vich\UploadableField(mapping: 'products', fileNameProperty: 'image', size: 'imageSize')]
+    private ?File $imageFile = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $imageSize = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $geometry = null;
@@ -40,44 +50,17 @@ class Report
     #[ORM\Column(nullable: true)]
     private ?int $status = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $updatedAt = null;
+
     public function __construct()
     {
-        $this->reporter = new ArrayCollection();
+        $this->dateCreated = new \DateTimeImmutable();
     }
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    /**
-     * @return Collection<int, User>
-     */
-    public function getReporter(): Collection
-    {
-        return $this->reporter;
-    }
-
-    public function addReporter(User $reporter): static
-    {
-        if (!$this->reporter->contains($reporter)) {
-            $this->reporter->add($reporter);
-            $reporter->setReport($this);
-        }
-
-        return $this;
-    }
-
-    public function removeReporter(User $reporter): static
-    {
-        if ($this->reporter->removeElement($reporter)) {
-            // set the owning side to null (unless already changed)
-            if ($reporter->getReport() === $this) {
-                $reporter->setReport(null);
-            }
-        }
-
-        return $this;
     }
 
     public function getDescription(): ?string
@@ -114,6 +97,32 @@ class Report
         $this->image = $image;
 
         return $this;
+    }
+
+    public function setImageFile(?File $imageFile = null): void
+    {
+        $this->imageFile = $imageFile;
+
+        if (null !== $imageFile) {
+            // It is required that at least one field changes if you are using doctrine
+            // otherwise the event listeners won't be called and the file is lost
+            $this->updatedAt = new \DateTimeImmutable();
+        }
+    }
+
+    public function getImageFile(): ?File
+    {
+        return $this->imageFile;
+    }
+
+    public function setImageSize(?int $imageSize): void
+    {
+        $this->imageSize = $imageSize;
+    }
+
+    public function getImageSize(): ?int
+    {
+        return $this->imageSize;
     }
 
     public function getGeometry(): ?string

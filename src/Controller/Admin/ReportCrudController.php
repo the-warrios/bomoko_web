@@ -4,9 +4,11 @@ namespace App\Controller\Admin;
 
 use App\Entity\Report;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
+use Vich\UploaderBundle\Form\Type\VichFileType;
 
 class ReportCrudController extends AbstractCrudController
 {
@@ -15,14 +17,22 @@ class ReportCrudController extends AbstractCrudController
         return Report::class;
     }
 
-    /*
+
     public function configureFields(string $pageName): iterable
     {
         return [
-            IdField::new('id'),
-            TextField::new('title'),
-            TextEditorField::new('description'),
+            IdField::new('id')->hideOnDetail()->hideOnForm(),
+            TextEditorField::new('description', 'Commentaire'),
+            ImageField::new('image', 'Photo')
+                ->setUploadDir('public/uploads/images')
+                ->setBasePath('uploads/images')
+                ->setRequired(false),
+            Field::new('video')
+                ->setFormType(VichFileType::class)
+                ->setLabel('Vidéo')
+                ->setFormTypeOptions(['required' => false]),
+
         ];
     }
-    */
+
 }
