@@ -51,7 +51,7 @@ class ApiLoginController extends AbstractController
         }
 
         // Rechercher l'utilisateur par l'email
-        $user = $this->em->getRepository(User::class)->findOneBy(['email' => "Nsoleoslo15@gmail.com"]);
+        $user = $this->em->getRepository(User::class)->findOneBy(['email' => $email]);
 
         $this->logger->info("# ApiLoginController > index : user", ['user' => $user->getEmail()]);
 
