@@ -62,9 +62,9 @@ class ApiLoginController extends AbstractController
             ], Response::HTTP_UNAUTHORIZED);
         }
 
-        return $this->json([
-            $user,
-        ], Response::HTTP_OK);
+        return $this->json(
+            $user
+        , Response::HTTP_OK);
     }
 
 }
