@@ -5,6 +5,23 @@
         <title>{% block title %}Welcome!{% endblock %}</title>
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
         {% block stylesheets %}
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <!--===============================================================================================-->
+            <link rel="icon" type="image/png" href="blood/images/icons/favicon.ico"/>
+            <!--===============================================================================================-->
+            <link rel="stylesheet" type="text/css" href="blood/vendor/bootstrap/css/bootstrap.min.css">
+            <!--===============================================================================================-->
+            <link rel="stylesheet" type="text/css" href="blood/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+            <!--===============================================================================================-->
+            <link rel="stylesheet" type="text/css" href="blood/vendor/animate/animate.css">
+            <!--===============================================================================================-->
+            <link rel="stylesheet" type="text/css" href="blood/vendor/css-hamburgers/hamburgers.min.css">
+            <!--===============================================================================================-->
+            <link rel="stylesheet" type="text/css" href="blood/vendor/select2/select2.min.css">
+            <!--===============================================================================================-->
+            <link rel="stylesheet" type="text/css" href="blood/css/util.css">
+            <link rel="stylesheet" type="text/css" href="blood/css/main.css">
         {% endblock %}
 
         {% block javascripts %}
@@ -12,6 +29,29 @@
         {% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
+        {% block body %}
+
+
+
+
+
+
+            <!--===============================================================================================-->
+            <script src="blood/vendor/jquery/jquery-3.2.1.min.js"></script>
+            <!--===============================================================================================-->
+            <script src="blood/vendor/bootstrap/js/popper.js"></script>
+            <script src="blood/vendor/bootstrap/js/bootstrap.min.js"></script>
+            <!--===============================================================================================-->
+            <script src="blood/vendor/select2/select2.min.js"></script>
+            <!--===============================================================================================-->
+            <script src="blood/vendor/tilt/tilt.jquery.min.js"></script>
+            <script >
+                $('.js-tilt').tilt({
+                    scale: 1.1
+                })
+            </script>
+            <!--===============================================================================================-->
+            <script src="blood/js/main.js"></script>
+        {% endblock %}
     </body>
 </html>
