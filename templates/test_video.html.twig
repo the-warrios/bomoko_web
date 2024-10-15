@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Video{% endblock %}
+
+{% block body %}
+
+    <h1>video</h1>
+
+    <form action="/api/video/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="video">
+        <button type="submit">Upload Video</button>
+    </form>
+
+{% endblock %}
