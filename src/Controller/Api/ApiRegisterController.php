@@ -25,9 +25,9 @@ class ApiRegisterController extends AbstractController
         $data = json_decode($request->getContent(), true);
 
         // Validation des données
-        $email = $data['email'] ?? null;
+        $email = $data['username'] ?? null;
         $password = $data['password'] ?? null;
-        $username = $data['username'] ?? null;
+        $username = $data['name'] ?? null;
 
         if (!$email || !$password || !$username) {
             return new JsonResponse(['error' => 'Missing required fields'], Response::HTTP_BAD_REQUEST);
