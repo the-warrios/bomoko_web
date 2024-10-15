@@ -23,7 +23,7 @@ security:
                 # target: app_any_route
             json_login:
                 check_path: api_login
-                username_path: email
+                username_path: username
                 password_path: password
 
             remember_me:
