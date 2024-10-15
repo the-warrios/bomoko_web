@@ -12,6 +12,7 @@
     {{ form_errors(registrationForm) }}
 
     {{ form_start(registrationForm) }}
+        {{ form_row(registrationForm.username, {label: 'Nom Complet'}) }}
         {{ form_row(registrationForm.email, {label: 'E-mail'}) }}
         {{ form_row(registrationForm.plainPassword, {
             label: 'Mot de passe'
