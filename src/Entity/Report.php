@@ -24,18 +24,20 @@ class Report
     private ?string $description = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Assert\File(
-        maxSize: '30M',
-        mimeTypes: ['video/mp4', 'video/avi', 'video/mpeg'],
-        mimeTypesMessage: 'Veuillez télécharger un fichier vidéo valide (mp4, avi, mpeg).'
-    )]
     private ?string $video = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $image = null;
 
     // NOTE: This is not a mapped field of entity metadata, just a simple property.
-    #[Vich\UploadableField(mapping: 'products', fileNameProperty: 'image', size: 'imageSize')]
+    #[Vich\UploadableField(mapping: 'video', fileNameProperty: 'video', size: 'videoSize')]
+    private ?File $videoFile = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $videoSize = null;
+
+    // NOTE: This is not a mapped field of entity metadata, just a simple property.
+    #[Vich\UploadableField(mapping: 'image', fileNameProperty: 'image', size: 'imageSize')]
     private ?File $imageFile = null;
 
     #[ORM\Column(nullable: true)]
@@ -123,6 +125,31 @@ class Report
     public function getImageSize(): ?int
     {
         return $this->imageSize;
+    }
+
+    public function getVideoFile(): ?File
+    {
+        return $this->videoFile;
+    }
+
+    public function setVideoFile(?File $videoFile = null): void
+    {
+        $this->videoFile = $videoFile;
+        if (null !== $videoFile) {
+            // It is required that at least one field changes if you are using doctrine
+            // otherwise the event listeners won't be called and the file is lost
+            $this->updatedAt = new \DateTimeImmutable();
+        }
+    }
+
+    public function getVideoSize(): ?int
+    {
+        return $this->videoSize;
+    }
+
+    public function setVideoSize(?int $videoSize): void
+    {
+        $this->videoSize = $videoSize;
     }
 
     public function getGeometry(): ?string

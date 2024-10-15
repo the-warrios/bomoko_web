@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Entity\Report;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 
@@ -15,8 +16,16 @@ class SignalementService
         $this->logger = $logger;
     }
 
-    public function addSignalement()
+    public function addSignalement($description, $image, $video)
     {
+        $report = new Report();
+        $report->setDescription($description);
+        $report->setStatus(null);
+        $report->setImageFile($image);
+        $report->setVideoFile($video);
+
+        $this->em->persist($report);
+        $this->em->flush();
 
     }
 }
