@@ -28,11 +28,9 @@ class ReportCrudController extends AbstractCrudController
                 ->setBasePath('uploads/images')
                 ->setRequired(false),
             ImageField::new('video', 'Video')
-                ->setFormType(VichFileType::class)
                 ->setUploadDir("public/uploads/videos")
                 ->setLabel('Upload Vidéo')
-                ->setFormTypeOptions(['required' => false])
-                ->onlyOnForms(),
+                ->setRequired(false)
 
         ];
     }
