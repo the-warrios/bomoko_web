@@ -27,8 +27,7 @@ class ReportCrudController extends AbstractCrudController
                 ->setUploadDir('public/uploads/images')
                 ->setBasePath('uploads/images')
                 ->setRequired(false),
-            ImageField::new('video', 'Video')
-                ->setUploadDir("public/uploads/videos")
+            Field::new('video', 'Video')
                 ->setLabel('Upload Vidéo')
                 ->setRequired(false)
 
