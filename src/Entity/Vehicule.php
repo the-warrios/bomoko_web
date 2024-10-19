@@ -20,6 +20,9 @@ class Vehicule
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $dateUpdated = null;
 
+    #[ORM\ManyToOne(inversedBy: 'vehicules')]
+    private ?Report $report_vehicule = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -45,6 +48,18 @@ class Vehicule
     public function setDateUpdated(\DateTimeInterface $dateUpdated): static
     {
         $this->dateUpdated = $dateUpdated;
+
+        return $this;
+    }
+
+    public function getReportVehicule(): ?Report
+    {
+        return $this->report_vehicule;
+    }
+
+    public function setReportVehicule(?Report $report_vehicule): static
+    {
+        $this->report_vehicule = $report_vehicule;
 
         return $this;
     }

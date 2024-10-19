@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ReportRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
@@ -52,9 +54,26 @@ class Report
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
 
+    /**
+     * @var Collection<int, ReportCategory>
+     */
+    #[ORM\OneToMany(targetEntity: ReportCategory::class, mappedBy: 'report_category')]
+    private Collection $reportCategories;
+
+    #[ORM\ManyToOne(inversedBy: 'reports')]
+    private ?User $user_report = null;
+
+    /**
+     * @var Collection<int, Vehicule>
+     */
+    #[ORM\OneToMany(targetEntity: Vehicule::class, mappedBy: 'report_vehicule')]
+    private Collection $vehicules;
+
     public function __construct()
     {
         $this->dateCreated = new \DateTimeImmutable();
+        $this->reportCategories = new ArrayCollection();
+        $this->vehicules = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -181,6 +200,78 @@ class Report
     public function setStatus(?int $status): static
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ReportCategory>
+     */
+    public function getReportCategories(): Collection
+    {
+        return $this->reportCategories;
+    }
+
+    public function addReportCategory(ReportCategory $reportCategory): static
+    {
+        if (!$this->reportCategories->contains($reportCategory)) {
+            $this->reportCategories->add($reportCategory);
+            $reportCategory->setReportCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReportCategory(ReportCategory $reportCategory): static
+    {
+        if ($this->reportCategories->removeElement($reportCategory)) {
+            // set the owning side to null (unless already changed)
+            if ($reportCategory->getReportCategory() === $this) {
+                $reportCategory->setReportCategory(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getUserReport(): ?User
+    {
+        return $this->user_report;
+    }
+
+    public function setUserReport(?User $user_report): static
+    {
+        $this->user_report = $user_report;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Vehicule>
+     */
+    public function getVehicules(): Collection
+    {
+        return $this->vehicules;
+    }
+
+    public function addVehicule(Vehicule $vehicule): static
+    {
+        if (!$this->vehicules->contains($vehicule)) {
+            $this->vehicules->add($vehicule);
+            $vehicule->setReportVehicule($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVehicule(Vehicule $vehicule): static
+    {
+        if ($this->vehicules->removeElement($vehicule)) {
+            // set the owning side to null (unless already changed)
+            if ($vehicule->getReportVehicule() === $this) {
+                $vehicule->setReportVehicule(null);
+            }
+        }
 
         return $this;
     }

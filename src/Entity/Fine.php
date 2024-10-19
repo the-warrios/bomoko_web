@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\FineRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -29,6 +31,17 @@ class Fine
 
     #[ORM\Column(nullable: true)]
     private ?float $amount = null;
+
+    /**
+     * @var Collection<int, FineCategory>
+     */
+    #[ORM\OneToMany(targetEntity: FineCategory::class, mappedBy: 'fine_category')]
+    private Collection $fineCategories;
+
+    public function __construct()
+    {
+        $this->fineCategories = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -91,6 +104,36 @@ class Fine
     public function setAmount(?float $amount): static
     {
         $this->amount = $amount;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, FineCategory>
+     */
+    public function getFineCategories(): Collection
+    {
+        return $this->fineCategories;
+    }
+
+    public function addFineCategory(FineCategory $fineCategory): static
+    {
+        if (!$this->fineCategories->contains($fineCategory)) {
+            $this->fineCategories->add($fineCategory);
+            $fineCategory->setFineCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFineCategory(FineCategory $fineCategory): static
+    {
+        if ($this->fineCategories->removeElement($fineCategory)) {
+            // set the owning side to null (unless already changed)
+            if ($fineCategory->getFineCategory() === $this) {
+                $fineCategory->setFineCategory(null);
+            }
+        }
 
         return $this;
     }
