@@ -4,6 +4,7 @@ namespace App\Controller\Api;
 
 use App\Service\ExtensionService;
 use App\Service\SignalementService;
+use phpDocumentor\Reflection\Types\This;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -83,6 +84,32 @@ class ApiReportController extends AbstractController
             [
                 'Bomoko' => "Oslo Jiwe"
             ]
+        );
+    }
+
+    #[Route('/api/report/category', name: "api_report_category", methods: ['GET'])]
+    public function getReportCategory() : JsonResponse
+    {
+        $data = $this->signalementService->getReportCategory();
+
+        //dd($data);
+
+        return $this->json(
+            $data,
+            Response::HTTP_OK,
+            [],
+            ['groups' => ['reportCategory:read']]
+        );
+    }
+
+    #[Route('/api/report/category/disaster', name: 'api_report_category_disaster', methods: ['GET'])]
+    public function getDisaster() : JsonResponse
+    {
+        $data = $this->signalementService->getDisaster();
+
+        return $this->json(
+          $data,
+          Response::HTTP_OK
         );
     }
 }

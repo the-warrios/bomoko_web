@@ -2,7 +2,12 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Disaster;
+use App\Entity\Employee;
+use App\Entity\Fine;
+use App\Entity\FineCategory;
 use App\Entity\Report;
+use App\Entity\ReportCategory;
 use App\Entity\User;
 use App\Entity\Vehicule;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
@@ -25,7 +30,7 @@ class DashboardController extends AbstractDashboardController
             return $this->render('admin/dashboard.html.twig');
         } else {
             // Aucun utilisateur n'est connecté
-            return $this->redirect('/login');
+            return $this->redirect('/');
         }
 
         // return parent::index();
@@ -57,10 +62,15 @@ class DashboardController extends AbstractDashboardController
     {
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
         yield MenuItem::section('Gestion des plaintes');
-        yield MenuItem::linkToCrud('Signalement', 'fas fa-warning', Report::class);
+        yield MenuItem::linkToCrud('Signalements', 'fas fa-warning', Report::class);
+        yield MenuItem::linkToCrud('Types de signalements', 'fas fa-cube', ReportCategory::class);
+        yield MenuItem::linkToCrud('Amandes', 'fas fa-unlock', Fine::class);
+        yield MenuItem::linkToCrud('Types d\'amandes', 'fa fa-sun-o', FineCategory::class);
+        yield MenuItem::linkToCrud('Types de desastres', 'fa fa-fire', Disaster::class);
         yield MenuItem::section('Gestion Automobile');
         yield MenuItem::linkToCrud('Vehicule', 'fas fa-car', Vehicule::class);
         yield MenuItem::section("Gestion d'accès");
+        yield MenuItem::linkToCrud('Employée', 'fas fa-user', Employee::class);
         yield MenuItem::linkToCrud('Utilisateurs', 'fas fa-users', User::class);
     }
 }

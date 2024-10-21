@@ -48,31 +48,24 @@ class Report
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $dateCreated = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?int $status = null;
+    #[ORM\Column(length: 100, nullable: true)]
+    private ?string $status = null;
 
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
 
-    /**
-     * @var Collection<int, ReportCategory>
-     */
-    #[ORM\OneToMany(targetEntity: ReportCategory::class, mappedBy: 'report_category')]
-    private Collection $reportCategories;
-
     #[ORM\ManyToOne(inversedBy: 'reports')]
     private ?User $user_report = null;
 
-    /**
-     * @var Collection<int, Vehicule>
-     */
-    #[ORM\OneToMany(targetEntity: Vehicule::class, mappedBy: 'report_vehicule')]
-    private Collection $vehicules;
+    #[ORM\ManyToOne(inversedBy: 'reports')]
+    private ?ReportCategory $reportCategory = null;
+
+    #[ORM\ManyToOne(inversedBy: 'reports')]
+    private ?Vehicule $reportVehicule = null;
 
     public function __construct()
     {
         $this->dateCreated = new \DateTimeImmutable();
-        $this->reportCategories = new ArrayCollection();
         $this->vehicules = new ArrayCollection();
     }
 
@@ -192,44 +185,14 @@ class Report
         return $this;
     }
 
-    public function getStatus(): ?int
+    public function getStatus(): ?string
     {
         return $this->status;
     }
 
-    public function setStatus(?int $status): static
+    public function setStatus(?string $status): static
     {
         $this->status = $status;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, ReportCategory>
-     */
-    public function getReportCategories(): Collection
-    {
-        return $this->reportCategories;
-    }
-
-    public function addReportCategory(ReportCategory $reportCategory): static
-    {
-        if (!$this->reportCategories->contains($reportCategory)) {
-            $this->reportCategories->add($reportCategory);
-            $reportCategory->setReportCategory($this);
-        }
-
-        return $this;
-    }
-
-    public function removeReportCategory(ReportCategory $reportCategory): static
-    {
-        if ($this->reportCategories->removeElement($reportCategory)) {
-            // set the owning side to null (unless already changed)
-            if ($reportCategory->getReportCategory() === $this) {
-                $reportCategory->setReportCategory(null);
-            }
-        }
 
         return $this;
     }
@@ -246,32 +209,26 @@ class Report
         return $this;
     }
 
-    /**
-     * @return Collection<int, Vehicule>
-     */
-    public function getVehicules(): Collection
+    public function getReportCategory(): ?ReportCategory
     {
-        return $this->vehicules;
+        return $this->reportCategory;
     }
 
-    public function addVehicule(Vehicule $vehicule): static
+    public function setReportCategory(?ReportCategory $reportCategory): static
     {
-        if (!$this->vehicules->contains($vehicule)) {
-            $this->vehicules->add($vehicule);
-            $vehicule->setReportVehicule($this);
-        }
+        $this->reportCategory = $reportCategory;
 
         return $this;
     }
 
-    public function removeVehicule(Vehicule $vehicule): static
+    public function getReportVehicule(): ?Vehicule
     {
-        if ($this->vehicules->removeElement($vehicule)) {
-            // set the owning side to null (unless already changed)
-            if ($vehicule->getReportVehicule() === $this) {
-                $vehicule->setReportVehicule(null);
-            }
-        }
+        return $this->reportVehicule;
+    }
+
+    public function setReportVehicule(?Vehicule $reportVehicule): static
+    {
+        $this->reportVehicule = $reportVehicule;
 
         return $this;
     }

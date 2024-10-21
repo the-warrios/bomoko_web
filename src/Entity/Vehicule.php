@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\VehiculeRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -20,8 +22,16 @@ class Vehicule
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $dateUpdated = null;
 
-    #[ORM\ManyToOne(inversedBy: 'vehicules')]
-    private ?Report $report_vehicule = null;
+    /**
+     * @var Collection<int, Report>
+     */
+    #[ORM\OneToMany(targetEntity: Report::class, mappedBy: 'reportVehicule')]
+    private Collection $reports;
+
+    public function __construct()
+    {
+        $this->reports = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -52,14 +62,32 @@ class Vehicule
         return $this;
     }
 
-    public function getReportVehicule(): ?Report
+    /**
+     * @return Collection<int, Report>
+     */
+    public function getReports(): Collection
     {
-        return $this->report_vehicule;
+        return $this->reports;
     }
 
-    public function setReportVehicule(?Report $report_vehicule): static
+    public function addReport(Report $report): static
     {
-        $this->report_vehicule = $report_vehicule;
+        if (!$this->reports->contains($report)) {
+            $this->reports->add($report);
+            $report->setReportVehicule($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReport(Report $report): static
+    {
+        if ($this->reports->removeElement($report)) {
+            // set the owning side to null (unless already changed)
+            if ($report->getReportVehicule() === $this) {
+                $report->setReportVehicule(null);
+            }
+        }
 
         return $this;
     }
