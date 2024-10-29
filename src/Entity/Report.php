@@ -57,7 +57,7 @@ class Report
     #[ORM\ManyToOne(inversedBy: 'reports')]
     private ?User $user_report = null;
 
-    #[ORM\ManyToOne(inversedBy: 'reports')]
+    #[ORM\ManyToOne(targetEntity: ReportCategory::class, inversedBy: 'reports')]
     private ?ReportCategory $reportCategory = null;
 
     #[ORM\ManyToOne(inversedBy: 'reports')]

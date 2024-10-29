@@ -26,8 +26,8 @@ class Fine
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $dateClosed = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?int $status = null;
+    #[ORM\Column(length: 100, nullable: true)]
+    private ?string $status = null;
 
     #[ORM\Column(nullable: true)]
     private ?float $amount = null;
@@ -41,6 +41,7 @@ class Fine
     public function __construct()
     {
         $this->fineCategories = new ArrayCollection();
+        $this->dateCreated = new \DateTimeImmutable();
     }
 
     public function getId(): ?int
