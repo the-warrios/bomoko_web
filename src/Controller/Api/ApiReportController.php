@@ -4,6 +4,7 @@ namespace App\Controller\Api;
 
 use App\Service\ExtensionService;
 use App\Service\SignalementService;
+use App\Service\VehiculeService;
 use phpDocumentor\Reflection\Types\This;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,14 +18,16 @@ class ApiReportController extends AbstractController
 {
     private SignalementService $signalementService;
     private LoggerInterface $logger;
-
     private ExtensionService $extensionService;
 
-    public function __construct(SignalementService $signalementService, LoggerInterface $logger, ExtensionService $extensionService)
+    private VehiculeService $vehiculeService;
+
+    public function __construct(SignalementService $signalementService, LoggerInterface $logger, ExtensionService $extensionService, VehiculeService $vehiculeService)
     {
         $this->signalementService = $signalementService;
         $this->logger = $logger;
         $this->extensionService = $extensionService;
+        $this->vehiculeService = $vehiculeService;
     }
 
     #[Route('/api/report', name: 'api_signalement', methods: ['POST'])]
@@ -33,7 +36,9 @@ class ApiReportController extends AbstractController
         $this->logger->info("# ApiReportController > index > start");
 
         $description = $request->request->get('description');
-
+        $plate = $request->request->get('plate');
+        $categoryId = $request->request->get('categoryId');
+        $userId = $request->headers->get('user-id');
 
         // Récupérer le fichier image et le fichier vidéo depuis la requête
         /** @var UploadedFile|null $imageFile */
@@ -59,7 +64,23 @@ class ApiReportController extends AbstractController
             ], Response::HTTP_BAD_REQUEST);
         }
 
-        //dd($video);
+       // dd($description, $plate, $categoryId, $userId, $image, $video);
+
+        // Recherche du véhicule par sa plaque
+        $vehicule = $this->vehiculeService->findOneVehicule($plate);
+
+        if (!$vehicule) {
+            $this->logger->info("# ApiReportController > index > add new vehicule", ["plaque" => $plate]);
+
+            // Ajoute le nouveau véhicule avec la plaque donnée
+            $this->vehiculeService->addVehicule($plate);
+
+            // Recharge le véhicule fraîchement ajouté
+            $vehicule = $this->vehiculeService->findOneVehicule($plate);
+        }
+
+        // À ce stade, $vehicule ne devrait plus être null
+        $vehiculeId = $vehicule ? $vehicule->getId() : null;
 
         // Log des données reçues
         $this->logger->info("# ApiReportController > index > data", [
@@ -68,7 +89,9 @@ class ApiReportController extends AbstractController
             "video" => $video?->getClientOriginalName()
         ]);
 
-        if (!$description || !$image || !$video)
+        //dd($vehiculeId);
+
+        if (!$description || !$image || !$video || !$vehiculeId || !$categoryId || !$userId)
         {
             return $this->json(
                 ["message" => "Données incomplètes"],
@@ -76,7 +99,7 @@ class ApiReportController extends AbstractController
             );
         }
 
-        $this->signalementService->addSignalement($description, $image, $video);
+        $this->signalementService->addSignalement($description, $image, $video, $vehiculeId, $categoryId, $userId);
 
         return $this->json(
             ['message' => 'Signalement Enregistré'],

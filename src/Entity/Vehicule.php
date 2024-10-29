@@ -31,6 +31,7 @@ class Vehicule
     public function __construct()
     {
         $this->reports = new ArrayCollection();
+        $this->dateUpdated = new \DateTimeImmutable();
     }
 
     public function getId(): ?int
