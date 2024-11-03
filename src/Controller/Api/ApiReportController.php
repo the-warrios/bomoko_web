@@ -4,6 +4,7 @@ namespace App\Controller\Api;
 
 use App\Service\ExtensionService;
 use App\Service\SignalementService;
+use App\Service\UserService;
 use App\Service\VehiculeService;
 use phpDocumentor\Reflection\Types\This;
 use Psr\Log\LoggerInterface;
@@ -19,15 +20,16 @@ class ApiReportController extends AbstractController
     private SignalementService $signalementService;
     private LoggerInterface $logger;
     private ExtensionService $extensionService;
-
     private VehiculeService $vehiculeService;
+    private UserService $userService;
 
-    public function __construct(SignalementService $signalementService, LoggerInterface $logger, ExtensionService $extensionService, VehiculeService $vehiculeService)
+    public function __construct(SignalementService $signalementService, LoggerInterface $logger, ExtensionService $extensionService, VehiculeService $vehiculeService, UserService $userService)
     {
         $this->signalementService = $signalementService;
         $this->logger = $logger;
         $this->extensionService = $extensionService;
         $this->vehiculeService = $vehiculeService;
+        $this->userService = $userService;
     }
 
     #[Route('/api/report', name: 'api_signalement', methods: ['POST'])]
@@ -88,6 +90,15 @@ class ApiReportController extends AbstractController
             "image" => $image?->getClientOriginalName(),
             "video" => $video?->getClientOriginalName()
         ]);
+
+        // verification de l'utilisateur
+        if(!($this->userService->getUserById($userId)))
+        {
+            return $this->json([
+                'message' => 'Utilisateur non trouvé !'],
+                Response::HTTP_UNAUTHORIZED
+            );
+        }
 
         //dd($vehiculeId);
 
