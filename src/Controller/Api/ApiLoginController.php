@@ -64,7 +64,10 @@ class ApiLoginController extends AbstractController
 
         return $this->json(
             $user
-        , Response::HTTP_OK);
+        , Response::HTTP_OK,
+            [],
+            ['groups' => ['user:read']]
+        );
     }
 
 }
