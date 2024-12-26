@@ -132,6 +132,7 @@ class SignalementService
                 'video' => $this->toolsService->getVideoUrl($report->getVideo()),
                 'image' => $this->toolsService->getImageUrl($report->getImage()),
                 'geometry' => $report->getGeometry(),
+                'category' => $report->getReportCategory()->getLabel(),
                 'dateCreated' => $report->getDateCreated()->format('Y-m-d H:i:s'),
                 'status' => $report->getStatus(),
             ];
