@@ -10,6 +10,11 @@
                 <meta charset="utf-8">
                 <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,minimal-ui">
                 <meta http-equiv="X-UA-Compatible" content="IE=edge">
+{#                <link rel="shortcut icon" type="image/x-icon" href="appUi/img/favicons/favicon.ico">#}
+                <link rel="manifest" href="appUi/img/favicons/manifest.json">
+                <meta name="msapplication-TileImage" content="appUi/img/favicons/mstile-150x150.png">
+                <meta name="theme-color" content="#ffffff">
+                <script src="appUi/js/config.js"></script>
                 <!-- [Font] Family -->
                 <link rel="preconnect" href="https://fonts.gstatic.com">
                 <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,500,600,700%7cPoppins:300,400,500,600,700,800,900&amp;display=swap" rel="stylesheet">
@@ -35,8 +40,10 @@
                     var userLinkRTL = document.getElementById('user-style-rtl');
                     linkRTL.setAttribute('disabled', true);
                     userLinkRTL.setAttribute('disabled', true);
+
                 }
             </script>
+            <script src="appUi/vendors/simplebar/simplebar.min.js"></script>
         {% endblock %}
     </head>
     <body>
@@ -52,6 +59,16 @@
             <script src="https://polyfill.io/v3/polyfill.min.js?features=window.scroll"></script>
             <script src="appUi/vendors/list.js/list.min.js"></script>
             <script src="appUi/js/theme.js"></script>
+            <script src="appUi/vendors/chart/chart.min.js"></script>
+            <script src="appUi/vendors/leaflet/leaflet.js"></script>
+            <script src="appUi/vendors/leaflet.markercluster/leaflet.markercluster.js"></script>
+            <script src="appUi/vendors/leaflet.tilelayer.colorfilter/leaflet-tilelayer-colorfilter.min.js"></script>
+            <script src="appUi/vendors/countup/countUp.umd.js"></script>
+            <script src="appUi/vendors/echarts/echarts.min.js"></script>
+            <script src="appUi/vendors/fullcalendar/main.min.js"></script>
+            <script src="appUi/assets/js/flatpickr.js"></script>
+            <script src="appUi/vendors/dayjs/dayjs.min.js"></script>
+            <script src="appUi/vendors/list.js/list.min.js"></script>
 
         {% endblock %}
     </body>

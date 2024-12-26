@@ -10,7 +10,7 @@
 /* -------------------------------------------------------------------------- */
 :root,
 [data-bs-theme=light] {
-  --falcon-blue: #2c7be5;
+  --falcon-blue: green;
   --falcon-indigo: #727cf5;
   --falcon-purple: #6b5eae;
   --falcon-pink: #ff679b;
@@ -35,7 +35,7 @@
   --falcon-gray-900: #344050;
   --falcon-gray-1000: #232e3c;
   --falcon-gray-1100: #0b1727;
-  --falcon-primary: #2c7be5;
+  --falcon-primary: green;
   --falcon-secondary: #748194;
   --falcon-success: #00d27a;
   --falcon-info: #27bcfd;
@@ -342,7 +342,7 @@
   --falcon-bg-shape-bg: #4695ff;
   --falcon-bg-shape-bg-ltd: linear-gradient(-45deg, #4695ff, #1970e2);
   --falcon-bg-shape-bg-dtl: linear-gradient(-45deg, #1970e2, #4695ff);
-  --falcon-line-chart-gradient: linear-gradient(-45deg, #014ba7, #0183d0);
+  --falcon-line-chart-gradient: linear-gradient(-45deg, #037a03, #4cf64c);
   --falcon-card-gradient: linear-gradient(-45deg, #1970e2, #4695ff);
   --falcon-progress-gradient: linear-gradient(-45deg, #1970e2, #4695ff);
   --falcon-bg-circle-shape: none;
@@ -603,7 +603,7 @@
   --falcon-bg-shape-bg: #01224b;
   --falcon-bg-shape-bg-ltd: linear-gradient(-45deg,rgba(20,58,101,.41),#053571);
   --falcon-bg-shape-bg-dtl: linear-gradient(-45deg,#0a3b79,rgba(9,25,43,.41));
-  --falcon-line-chart-gradient: linear-gradient(45deg,#012552,#001835);
+  --falcon-line-chart-gradient: linear-gradient(45deg,#4cf64c,#037a03);
   --falcon-card-gradient: linear-gradient(45deg,#012552,#001835);
   --falcon-bg-circle-shape: linear-gradient(-45deg,rgba(9,25,43,.41),#0a3b79);
   --falcon-bg-circle-shape-bg: #4695ff;

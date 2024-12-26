@@ -4,10 +4,418 @@
 
 {% block body %}
 
-    <div class="container">
-        <span class="justify-content-center">
-            Home Controller
-        </span>
-    </div>
+    <!-- ===============================================-->
+    <!--    Main Content-->
+    <!-- ===============================================-->
+    <main class="main" id="top">
+        <div class="container" data-layout="container">
+            <script>
+                var isFluid = JSON.parse(localStorage.getItem('isFluid'));
+                if (isFluid) {
+                    var container = document.querySelector('[data-layout]');
+                    container.classList.remove('container');
+                    container.classList.add('container-fluid');
+                }
+            </script>
+            <nav class="navbar navbar-light navbar-vertical navbar-expand-xl">
+                <script>
+                    var navbarStyle = localStorage.getItem("navbarStyle");
+                    if (navbarStyle && navbarStyle !== 'transparent') {
+                        document.querySelector('.navbar-vertical').classList.add(`navbar-${navbarStyle}`);
+                    }
+                </script>
+                <div class="d-flex align-items-center">
+                    <div class="toggle-icon-wrapper">
+
+                        <button class="btn navbar-toggler-humburger-icon navbar-vertical-toggle"
+                                data-bs-toggle="tooltip" data-bs-placement="left" title="Toggle Navigation"><span
+                                    class="navbar-toggle-icon"><span class="toggle-line"></span></span></button>
+
+                    </div>
+                    <a class="navbar-brand" href="/">
+                        <div class="d-flex align-items-center py-3"><img class="me-2"
+                                                                         src="appUi/img/icons/spot-illustrations/favicon.webp"
+                                                                         alt="" width="40"/><span
+                                    class="font-sans-serif text-success">Bomoko</span>
+                        </div>
+                    </a>
+                </div>
+                <div class="collapse navbar-collapse" id="navbarVerticalCollapse">
+                    <div class="navbar-vertical-content scrollbar">
+                        <ul class="navbar-nav flex-column mb-3" id="navbarVerticalNav">
+                            <li class="nav-item">
+                                <!-- parent pages--><a class="nav-link" href="/" role="button">
+                                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span
+                                                    class="fas fa-home"></span></span><span class="nav-link-text ps-1">Home</span>
+                                    </div>
+                                </a>
+                                <!-- parent pages--><a class="nav-link" href="#" role="button">
+                                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span
+                                                    class="fas fa-bars"></span></span><span class="nav-link-text ps-1">Mes Signalement</span>
+                                    </div>
+                                </a>
+
+                                <!-- parent pages--><a class="nav-link" href="#" role="button">
+                                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span
+                                                    class="fas fa-info"></span></span><span class="nav-link-text ps-1">Nos conditions générales</span>
+                                    </div>
+                                </a>
+                                {% if is_granted('ROLE_ADMIN') %}
+                                    <!-- parent pages-->
+                                    <a class="nav-link" href="/admin" role="button">
+                                        <div class="d-flex align-items-center">
+                                        <span class="nav-link-icon">
+                                            <span class="fa fa-code-branch"></span>
+                                        </span>
+                                            <span class="nav-link-text ps-1">Administration</span>
+                                        </div>
+                                    </a>
+                                {% endif %}
+
+
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+
+            </nav>
+
+            <div class="content">
+                <nav class="navbar navbar-light navbar-glass navbar-top navbar-expand">
+                    <button class="btn navbar-toggler-humburger-icon navbar-toggler me-1 me-sm-3" type="button"
+                            data-bs-toggle="collapse" data-bs-target="#navbarVerticalCollapse"
+                            aria-controls="navbarVerticalCollapse" aria-expanded="false" aria-label="Toggle Navigation">
+                        <span class="navbar-toggle-icon"><span class="toggle-line"></span></span></button>
+                    <a class="navbar-brand me-1 me-sm-3" href="/">
+                        <div class="d-flex align-items-center"><img class="me-2"
+                                                                    src="appUi/img/icons/spot-illustrations/favicon.webp"
+                                                                    alt="" width="40"/><span
+                                    class="font-sans-serif text-success">Bomoko</span>
+                        </div>
+                    </a>
+
+                    <ul class="navbar-nav navbar-nav-icons ms-auto flex-row align-items-center">
+                        <li class="nav-item ps-2 pe-0">
+                            <div class="dropdown theme-control-dropdown"><a
+                                        class="nav-link d-flex align-items-center dropdown-toggle fa-icon-wait fs-9 pe-1 py-0"
+                                        href="#" role="button" id="themeSwitchDropdown" data-bs-toggle="dropdown"
+                                        aria-haspopup="true" aria-expanded="false"><span class="fas fa-sun fs-7"
+                                                                                         data-fa-transform="shrink-2"
+                                                                                         data-theme-dropdown-toggle-icon="light"></span><span
+                                            class="fas fa-moon fs-7" data-fa-transform="shrink-3"
+                                            data-theme-dropdown-toggle-icon="dark"></span><span
+                                            class="fas fa-adjust fs-7" data-fa-transform="shrink-2"
+                                            data-theme-dropdown-toggle-icon="auto"></span></a>
+                                <div class="dropdown-menu dropdown-menu-end dropdown-caret border py-0 mt-3"
+                                     aria-labelledby="themeSwitchDropdown">
+                                    <div class="bg-white dark__bg-1000 rounded-2 py-2">
+                                        <button class="dropdown-item d-flex align-items-center gap-2" type="button"
+                                                value="light" data-theme-control="theme"><span
+                                                    class="fas fa-sun"></span>Light<span
+                                                    class="fas fa-check dropdown-check-icon ms-auto text-600"></span>
+                                        </button>
+                                        <button class="dropdown-item d-flex align-items-center gap-2" type="button"
+                                                value="dark" data-theme-control="theme"><span class="fas fa-moon"
+                                                                                              data-fa-transform=""></span>Dark<span
+                                                    class="fas fa-check dropdown-check-icon ms-auto text-600"></span>
+                                        </button>
+                                        <button class="dropdown-item d-flex align-items-center gap-2" type="button"
+                                                value="auto" data-theme-control="theme"><span class="fas fa-adjust"
+                                                                                              data-fa-transform=""></span>Auto<span
+                                                    class="fas fa-check dropdown-check-icon ms-auto text-600"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+
+                        <li class="nav-item dropdown"><a class="nav-link pe-0 ps-2" id="navbarDropdownUser"
+                                                         role="button" data-bs-toggle="dropdown" aria-haspopup="true"
+                                                         aria-expanded="false">
+                                <div class="avatar avatar-xl">
+                                    <img class="rounded-circle" src="appUi/img/team/3-thumb.png" alt=""/>
+
+                                </div>
+                            </a>
+                            <div class="dropdown-menu dropdown-caret dropdown-caret dropdown-menu-end py-0"
+                                 aria-labelledby="navbarDropdownUser">
+                                <div class="bg-white dark__bg-1000 rounded-2 py-2">
+                                    <a class="dropdown-item fw-bold text-warning"
+                                       href="#!"><span>{{ user.userIdentifier }}</span></a>
+
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="#">Profile &amp; account</a>
+                                    {#                                    <a class="dropdown-item" href="#!">Feedback</a> #}
+
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="/logout">Logout</a>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="row g-4">
+                    <div class="col-xxl-12" >
+                        <div class="card rounded-3 overflow-hidden h-100">
+                            <div class="card-body bg-line d-flex flex-column justify-content-between" style="background-color: green" >
+                                <div class="row align-items-center g-0">
+                                    <div class="col" data-bs-theme="light">
+                                        <h4 class="text-white mb-0">15 Signalements</h4>
+                                        <p class="fs-10 fw-semi-bold text-white">26-12-2024</p>
+                                    </div>
+                                </div>
+                                <!-- Find the JS file for the following calendar at: src/js/charts/echarts/line-payment.js-->
+                                <!-- If you are not using gulp based workflow, you can find the transpiled code at: public/assets/js/theme.js-->
+                                <div class="" style="height:200px"
+                                     data-echart-responsive="false"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mt-5">
+                    <div class="card-header border-bottom">
+                        <div class="row flex-between-end">
+                            <div class="col-auto align-self-center">
+                                <h5 class="mb-0" data-anchor="data-anchor">Mes Signalements</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body pt-0">
+                        <div class="tab-content">
+                            <div class="tab-pane preview-tab-pane active" role="tabpanel"
+                                 aria-labelledby="tab-dom-9f8976e2-2427-4739-b9a0-989de0e8952d"
+                                 id="dom-9f8976e2-2427-4739-b9a0-989de0e8952d">
+                                <div class="table-responsive scrollbar">
+                                    <table class="table table-hover table-striped overflow-hidden">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col">id</th>
+                                            <th scope="col">Categorie</th>
+                                            <th scope="col">Image</th>
+                                            <th scope="col">Vidéo</th>
+                                            <th scope="col">Status</th>
+                                            <th class="text-end" scope="col">Date Création</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for report in signalement %}
+                                            <tr>
+                                                <td>{{ report.id }}</td>
+                                                <td>{{ report.category }}</td>
+                                                <td class="text-nowrap">
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="avatar avatar-xl">
+                                                            {% if report.image %}
+                                                                <img class="rounded-circle"
+                                                                     src="uploads/images/{{ report.image }}" alt="Image"
+                                                                     width="100">
+                                                            {% else %}
+                                                                Pas d'image
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    {% if report.video %}
+                                                        <a href="{{ report.video }}" target="_blank">Voir la vidéo</a>
+                                                    {% else %}
+                                                        Pas de vidéo
+                                                    {% endif %}
+                                                </td>
+                                                <td>
+                                                    <span
+                                                            class="badge badge rounded-pill d-block p-2
+                                                        {% if report.status == 'En attente' %}
+                                                            badge-subtle-primary
+                                                        {% elseif report.status == 'Completer' %}
+                                                            badge-subtle-success
+                                                        {% elseif report.status == 'Rejeter' %}
+                                                            badge-subtle-danger
+                                                        {% endif %}">
+                                                        {{ report.status }}
+                                                    </span>
+                                                </td>
+                                                <td class="text-end">{{ report.dateCreated|date('d-m-Y H:i:s') }}</td>
+                                            </tr>
+                                        {% else %}
+                                            <tr>
+                                                <td colspan="6">Aucun signalement trouvé.</td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <footer class="footer">
+                    <div class="row g-0 justify-content-between fs-10 mt-4 mb-3">
+                        <div class="col-12 col-sm-auto text-center">
+                            <p class="mb-0 text-600">Bomoko <span class="d-none d-sm-inline-block">| </span><br
+                                        class="d-sm-none"/> 2024 &copy; <a href="#"></a></p>
+                        </div>
+                        <div class="col-12 col-sm-auto text-center">
+                            <p class="mb-0 text-600">v1.0.0</p>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+            <div class="modal fade" id="authentication-modal" tabindex="-1" role="dialog"
+                 aria-labelledby="authentication-modal-label" aria-hidden="true">
+                <div class="modal-dialog mt-6" role="document">
+                    <div class="modal-content border-0">
+                        <div class="modal-header px-5 position-relative modal-shape-header bg-shape">
+                            <div class="position-relative z-1">
+                                <h4 class="mb-0 text-white" id="authentication-modal-label">Register</h4>
+                                <p class="fs-10 mb-0 text-white">Please create your free Falcon account</p>
+                            </div>
+                            <button class="btn-close position-absolute top-0 end-0 mt-2 me-2" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body py-4 px-5">
+                            <form>
+                                <div class="mb-3">
+                                    <label class="form-label" for="modal-auth-name">Name</label>
+                                    <input class="form-control" type="text" autocomplete="on" id="modal-auth-name"/>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="modal-auth-email">Email address</label>
+                                    <input class="form-control" type="email" autocomplete="on" id="modal-auth-email"/>
+                                </div>
+                                <div class="row gx-2">
+                                    <div class="mb-3 col-sm-6">
+                                        <label class="form-label" for="modal-auth-password">Password</label>
+                                        <input class="form-control" type="password" autocomplete="on"
+                                               id="modal-auth-password"/>
+                                    </div>
+                                    <div class="mb-3 col-sm-6">
+                                        <label class="form-label" for="modal-auth-confirm-password">Confirm
+                                            Password</label>
+                                        <input class="form-control" type="password" autocomplete="on"
+                                               id="modal-auth-confirm-password"/>
+                                    </div>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="modal-auth-register-checkbox"/>
+                                    <label class="form-label" for="modal-auth-register-checkbox">I accept the <a
+                                                href="#!">terms </a>and <a class="white-space-nowrap" href="#!">privacy
+                                            policy</a></label>
+                                </div>
+                                <div class="mb-3">
+                                    <button class="btn btn-primary d-block w-100 mt-3" type="submit" name="submit">
+                                        Register
+                                    </button>
+                                </div>
+                            </form>
+                            <div class="position-relative mt-5">
+                                <hr/>
+                                <div class="divider-content-center">or register with</div>
+                            </div>
+                            <div class="row g-2 mt-2">
+                                <div class="col-sm-6"><a class="btn btn-outline-google-plus btn-sm d-block w-100"
+                                                         href="#"><span class="fab fa-google-plus-g me-2"
+                                                                        data-fa-transform="grow-8"></span> google</a>
+                                </div>
+                                <div class="col-sm-6"><a class="btn btn-outline-facebook btn-sm d-block w-100" href="#"><span
+                                                class="fab fa-facebook-square me-2" data-fa-transform="grow-8"></span>
+                                        facebook</a></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="eventDetailsModal" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content border"></div>
+                </div>
+            </div>
+            <div class="modal fade" id="addEventModal" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content border">
+                        <form id="addEventForm" autocomplete="off">
+                            <div class="modal-header px-x1 bg-body-tertiary border-bottom-0">
+                                <h5 class="modal-title">Create Schedule</h5>
+                                <button class="btn-close me-n1" type="button" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body p-x1">
+                                <div class="mb-3">
+                                    <label class="fs-9" for="eventTitle">Title</label>
+                                    <input class="form-control" id="eventTitle" type="text" name="title"
+                                           required="required"/>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="fs-9" for="eventStartDate">Start Date</label>
+                                    <input class="form-control datetimepicker" id="eventStartDate" type="text"
+                                           required="required" name="startDate" placeholder="yyyy/mm/dd hh:mm"
+                                           data-options='{"static":"true","enableTime":"true","dateFormat":"Y-m-d H:i"}'/>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="fs-9" for="eventEndDate">End Date</label>
+                                    <input class="form-control datetimepicker" id="eventEndDate" type="text"
+                                           name="endDate" placeholder="yyyy/mm/dd hh:mm"
+                                           data-options='{"static":"true","enableTime":"true","dateFormat":"Y-m-d H:i"}'/>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="eventAllDay" name="allDay"/>
+                                    <label class="form-check-label" for="eventAllDay">All Day
+                                    </label>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="fs-9">Schedule Meeting</label>
+                                    <div><a class="btn badge-subtle-success btn-sm" href="#!"><span
+                                                    class="fas fa-video me-2"></span>Add video conference link</a></div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="fs-9" for="eventDescription">Description</label>
+                                    <textarea class="form-control" rows="3" name="description"
+                                              id="eventDescription"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="fs-9" for="eventLabel">Label</label>
+                                    <select class="form-select" id="eventLabel" name="label">
+                                        <option value="" selected="selected">None</option>
+                                        <option value="primary">Business</option>
+                                        <option value="danger">Important</option>
+                                        <option value="success">Personal</option>
+                                        <option value="warning">Must Attend</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="modal-footer d-flex justify-content-end align-items-center bg-body-tertiary border-0">
+                                <a class="me-3 text-600" href="../app/events/create-an-event.html">More options</a>
+                                <button class="btn btn-primary px-4" type="submit">Save</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <!-- ===============================================-->
+    <!--    End of Main Content-->
+    <!-- ===============================================-->
+    <script data-cfasync="false" src="/assets/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+    <script src="appUi/vendors/popper/popper.min.js"></script>
+    <script src="appUi/vendors/bootstrap/bootstrap.min.js"></script>
+    <script src="appUi/vendors/anchorjs/anchor.min.js"></script>
+    <script src="appUi/vendors/is/is.min.js"></script>
+    <script src="appUi/vendors/fontawesome/all.min.js"></script>
+    <script src="appUi/vendors/lodash/lodash.min.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=window.scroll"></script>
+    <script src="appUi/vendors/list.js/list.min.js"></script>
+    <script src="appUi/js/theme.js"></script>
+    <script src="appUi/vendors/chart/chart.min.js"></script>
+    <script src="appUi/vendors/leaflet/leaflet.js"></script>
+    <script src="appUi/vendors/leaflet.markercluster/leaflet.markercluster.js"></script>
+    <script src="appUi/vendors/leaflet.tilelayer.colorfilter/leaflet-tilelayer-colorfilter.min.js"></script>
+    <script src="appUi/vendors/countup/countUp.umd.js"></script>
+    <script src="appUi/vendors/echarts/echarts.min.js"></script>
+    <script src="appUi/vendors/fullcalendar/main.min.js"></script>
+    <script src="appUi/assets/js/flatpickr.js"></script>
+    <script src="appUi/vendors/dayjs/dayjs.min.js"></script>
+    <script src="appUi/vendors/list.js/list.min.js"></script>
 
 {% endblock %}

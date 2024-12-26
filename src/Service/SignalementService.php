@@ -138,4 +138,32 @@ class SignalementService
             ];
         }, $reports);
     }
+
+    public function getRportForHome($userId)
+    {
+
+        $dateDebut = (new \DateTime())->modify('-365 days');
+        $dateFin = new \DateTime();
+
+        // Récupération des reports
+        $reports = $this->reportRepository->findByUserAndDateRange($userId, $dateDebut, $dateFin, 0);
+
+        if (empty($reports)) {
+            return [];
+        }
+
+        // Retourner les résultats formatés
+        return array_map(function ($report) {
+            return [
+                'id' => $report->getId(),
+                'description' => $report->getDescription(),
+                'video' => $this->toolsService->getVideoUrl($report->getVideo()),
+                'image' => $report->getImage(),
+                'geometry' => $report->getGeometry(),
+                'category' => $report->getReportCategory()->getLabel(),
+                'dateCreated' => $report->getDateCreated()->format('Y-m-d H:i:s'),
+                'status' => $report->getStatus(),
+            ];
+        }, $reports);
+    }
 }
