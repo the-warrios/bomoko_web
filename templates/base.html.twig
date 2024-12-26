@@ -5,53 +5,54 @@
         <title>{% block title %}Welcome!{% endblock %}</title>
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
         {% block stylesheets %}
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1">
-            <!--===============================================================================================-->
-            <link rel="icon" type="image/png" href="blood/images/icons/favicon.ico"/>
-            <!--===============================================================================================-->
-            <link rel="stylesheet" type="text/css" href="blood/vendor/bootstrap/css/bootstrap.min.css">
-            <!--===============================================================================================-->
-            <link rel="stylesheet" type="text/css" href="blood/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
-            <!--===============================================================================================-->
-            <link rel="stylesheet" type="text/css" href="blood/vendor/animate/animate.css">
-            <!--===============================================================================================-->
-            <link rel="stylesheet" type="text/css" href="blood/vendor/css-hamburgers/hamburgers.min.css">
-            <!--===============================================================================================-->
-            <link rel="stylesheet" type="text/css" href="blood/vendor/select2/select2.min.css">
-            <!--===============================================================================================-->
-            <link rel="stylesheet" type="text/css" href="blood/css/util.css">
-            <link rel="stylesheet" type="text/css" href="blood/css/main.css">
+            <head>
+                <title>Home | Bomoko</title><!-- [Meta] -->
+                <meta charset="utf-8">
+                <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,minimal-ui">
+                <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                <!-- [Font] Family -->
+                <link rel="preconnect" href="https://fonts.gstatic.com">
+                <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,500,600,700%7cPoppins:300,400,500,600,700,800,900&amp;display=swap" rel="stylesheet">
+                <link href="appUi/vendors/simplebar/simplebar.min.css" rel="stylesheet">
+                <link href="appUi/css/theme-rtl.css" rel="stylesheet" id="style-rtl">
+                <link href="appUi/css/theme.css" rel="stylesheet" id="style-default">
+                <link href="appUi/css/user-rtl.css" rel="stylesheet" id="user-style-rtl">
+                <link href="appUi/css/user.css" rel="stylesheet" id="user-style-default">
+            </head><!-- [Head] end --><!-- [Body] Start -->
         {% endblock %}
 
         {% block javascripts %}
-            {% block importmap %}{{ importmap('app') }}{% endblock %}
+            <script>
+                var isRTL = JSON.parse(localStorage.getItem('isRTL'));
+                if (isRTL) {
+                    var linkDefault = document.getElementById('style-default');
+                    var userLinkDefault = document.getElementById('user-style-default');
+                    linkDefault.setAttribute('disabled', true);
+                    userLinkDefault.setAttribute('disabled', true);
+                    document.querySelector('html').setAttribute('dir', 'rtl');
+                } else {
+                    var linkRTL = document.getElementById('style-rtl');
+                    var userLinkRTL = document.getElementById('user-style-rtl');
+                    linkRTL.setAttribute('disabled', true);
+                    userLinkRTL.setAttribute('disabled', true);
+                }
+            </script>
         {% endblock %}
     </head>
     <body>
         {% block body %}
 
+            <script data-cfasync="false" src="/assets/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+            <script src="appUi/vendors/popper/popper.min.js"></script>
+            <script src="appUi/vendors/bootstrap/bootstrap.min.js"></script>
+            <script src="appUi/vendors/anchorjs/anchor.min.js"></script>
+            <script src="appUi/vendors/is/is.min.js"></script>
+            <script src="appUi/vendors/fontawesome/all.min.js"></script>
+            <script src="appUi/vendors/lodash/lodash.min.js"></script>
+            <script src="https://polyfill.io/v3/polyfill.min.js?features=window.scroll"></script>
+            <script src="appUi/vendors/list.js/list.min.js"></script>
+            <script src="appUi/js/theme.js"></script>
 
-
-
-
-
-            <!--===============================================================================================-->
-            <script src="blood/vendor/jquery/jquery-3.2.1.min.js"></script>
-            <!--===============================================================================================-->
-            <script src="blood/vendor/bootstrap/js/popper.js"></script>
-            <script src="blood/vendor/bootstrap/js/bootstrap.min.js"></script>
-            <!--===============================================================================================-->
-            <script src="blood/vendor/select2/select2.min.js"></script>
-            <!--===============================================================================================-->
-            <script src="blood/vendor/tilt/tilt.jquery.min.js"></script>
-            <script >
-                $('.js-tilt').tilt({
-                    scale: 1.1
-                })
-            </script>
-            <!--===============================================================================================-->
-            <script src="blood/js/main.js"></script>
         {% endblock %}
     </body>
 </html>

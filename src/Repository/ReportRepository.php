@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Report;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Exception;
 
 /**
  * @extends ServiceEntityRepository<Report>
@@ -40,4 +41,39 @@ class ReportRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
+    /**
+     * Récupère les rapports d'un utilisateur avec des critères.
+     */
+    public function findByUserAndDateRange(
+        string $userId,
+        ?\DateTimeInterface $dateDebut = null,
+        ?\DateTimeInterface $dateFin = null,
+        int $offset = 0,
+        int $limit = 10
+    ): array {
+
+        // Conversion de l'UUID en format binaire hexadécimal
+        $uuid = hex2bin(str_replace('-', '', $userId));  // Retirer les tirets et convertir en binaire
+
+        $qb = $this->createQueryBuilder('r')
+            ->where('r.user_report = :userId')
+            ->setParameter('userId', $uuid);
+
+        if ($dateDebut) {
+            $qb->andWhere('r.dateCreated >= :dateDebut')
+                ->setParameter('dateDebut', $dateDebut);
+        }
+
+        if ($dateFin) {
+            $qb->andWhere('r.dateCreated <= :dateFin')
+                ->setParameter('dateFin', $dateFin);
+        }
+
+        return $qb->setFirstResult($offset)
+            ->setMaxResults($limit)
+            ->orderBy('r.dateCreated', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
 }

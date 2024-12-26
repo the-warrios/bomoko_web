@@ -4,6 +4,7 @@ namespace App\Controller\Api;
 
 use App\Service\ExtensionService;
 use App\Service\SignalementService;
+use App\Service\ToolsService;
 use App\Service\UserService;
 use App\Service\VehiculeService;
 use phpDocumentor\Reflection\Types\This;
@@ -146,4 +147,37 @@ class ApiReportController extends AbstractController
           Response::HTTP_OK
         );
     }
+
+    #[Route('/api/report/register', name: 'api_report_register', methods: ['POST'])]
+    public function getReportRegister(Request $request): JsonResponse
+    {
+        $token = $request->headers->get('Authorization');
+        if (empty($token)) {
+            return new JsonResponse(['message' => 'le jeton d\'authorisation est requis.'], Response::HTTP_UNAUTHORIZED);
+        }
+
+        $content = $request->getContent();
+
+        if (empty($content)) {
+            return new JsonResponse(['message' => 'la requete ne peut être vide '], Response::HTTP_BAD_REQUEST);
+        }
+
+        $data = json_decode($content, true);
+
+        if ($data === null) {
+            return new JsonResponse(['message' => 'Invalid JSON format.'], Response::HTTP_BAD_REQUEST);
+        }
+
+        try {
+            $reports = $this->signalementService->getReportRegister($data, $token);
+            return new JsonResponse(['reports' => $reports], Response::HTTP_OK);
+        } catch (\InvalidArgumentException $e) {
+            return new JsonResponse(['message' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
+        } catch (\RuntimeException $e) {
+            return new JsonResponse(['message' => $e->getMessage()], Response::HTTP_UNAUTHORIZED);
+        } catch (\Exception $e) {
+            return new JsonResponse(['message' => $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }
